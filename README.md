@@ -1,97 +1,198 @@
 
-# [Nodejs Starter](https://appseed.us/boilerplate-code/nodejs-starter)
+# Nodejs API Server
 
-Express / [Nodejs Starter](https://appseed.us/boilerplate-code/nodejs-starter) with [JWT authentication](https://jwt.io/introduction/), [SQLite](https://www.sqlite.org/index.html) database, [Sequelize](http://docs.sequelizejs.com/) ORM, unit tests and basic tooling - Provided by **AppSeed** [Web App Generator](https://appseed.us/app-generator).
+Express / Nodejs Starter with JWT authentication, and **SQLite** persistance - Provided by **AppSeed** [App Generator](https://appseed.us/app-generator).
+Authentication Flow uses `json web tokens` via Passport library - `passport-jwt` strategy.
 
 <br />
 
-![Open-Source Nodejs Starter - Product cover image.](https://github.com/app-generator/static/blob/master/products/boilerplate-code-nodejs-starter-cover.jpg?raw=true) 
+> Features:
+
+- [API Definition](https://docs.appseed.us/boilerplate-code/api-unified-definition) - the unified API structure implemented by this server
+- Simple, intuitive codebase - can be extended with ease.  
+- TypeScript, Joy for validation
+- **Stack**: NodeJS / Express / SQLite / TypeORM
+- Auth: Passport / `passport-jwt` strategy 
+
+<br />
+
+> **[PRO Version](https://github.com/app-generator/api-server-nodejs-pro)** available: MongoDB persistance, Docker, Unitary Tests, 24/7 LIVE Support via [Discord](https://discord.gg/fZC6hup)
+
+> Can be used with other [React Starters](https://appseed.us/apps/react) for a complete **Full-Stack** experience:
+
+| [React Node JS Berry](https://appseed.us/product/react-node-js-berry-dashboard) | [Full-Stack Material PRO](https://appseed.us/full-stack/react-material-dashboard) | [React Node Datta Able](https://github.com/app-generator/react-datta-able) |
+| --- | --- | --- |
+| [![React Node JS Berry](https://user-images.githubusercontent.com/51070104/124934742-aa392300-e00d-11eb-83bf-28d8b8704ec8.png)](https://appseed.us/product/react-node-js-berry-dashboard) | [![Full-Stack Material PRO](https://user-images.githubusercontent.com/51070104/128878037-50da7a12-787d-455d-933a-30b2957e2896.png)](https://appseed.us/full-stack/react-material-dashboard) | [![React Node Datta Able](https://user-images.githubusercontent.com/51070104/125737710-834a9e6f-c39b-4f3b-a42a-9583ce2ce1da.png)](https://github.com/app-generator/react-datta-able)
+
+<br />
+
+![Nodejs API Server - Open-source Nodejs Starter provided by AppSeed.](https://user-images.githubusercontent.com/51070104/124414813-142aa180-dd5c-11eb-9279-6b082dadc51a.png)
 
 <br />
 
 ## Requirements
-- [Node.js](https://nodejs.org/) >= 6.x
+
+- [Node.js](https://nodejs.org/) >= 12.x
+- [SQLite](https://www.sqlite.org/index.html)
 
 <br />
 
-## Authentication
-Authentication is based on [json web tokens](https://jwt.io). `passport-jwt` strategy is used to handle the email / password authentication.
-After a successful login the generated token is sent to the requester. 
+## How to use the code
+
+**Step #1** - Clone the project
+
+```bash
+$ git clone https://github.com/app-generator/api-server-nodejs.git
+$ cd api-server-nodejs
+```
+
+**Step #2** - Install dependencies via NPM or Yarn
+
+```bash
+$ npm i
+// OR
+$ yarn
+```
+
+**Step #3** - Run the SQLite migration via TypeORM
+
+```
+$ yarn typeorm migration:run
+```
+
+**Step #4** - Start the API server (development mode)
+
+```bash
+$ npm dev
+// OR
+$ yarn dev
+```
+
+**Step #5** - Production Build (files generated in `build` directory)
+
+```bash
+$ npm build
+// OR
+$ yarn build
+```
+
+**Step #6** - Start the API server for production (files served from `build/index.js`)
+
+```bash
+$ npm start
+// OR
+$ yarn start
+```
+
+The API server will start using the `PORT` specified in `.env` file (default 5000).
+
+<br />
+
+## Codebase Structure
+
+```bash
+< ROOT / src >
+     | 
+     |-- config/                              
+     |    |-- config.ts             # Configuration       
+     |    |-- passport.ts           # Define Passport Strategy             
+     | 
+     |-- migration/
+     |    |-- some_migration.ts     # database migrations
+     |
+     |-- models/                              
+     |    |-- activeSession.ts      # Sessions Model (Typeorm)              
+     |    |-- user.ts               # User Model (Typeorm) 
+     | 
+     |-- routes/                              
+     |    |-- users.ts              # Define Users API Routes
+     | 
+     | 
+     |-- index.js                     # API Entry Point
+     |-- .env                       # Specify the ENV variables
+     |                        
+     |-- ************************************************************************
+```
+
+<br />
+
+## SQLite Path
+
+The SQLite Path is set in `.env`, as `SQLITE_PATH`
+
+## Database migration
+
+> Generate migration:
+
+```bash
+$ yarn typeorm migration:generate -n your_migration_name
+```
+
+> run migration: 
+
+```bash
+$ yarn typeorm migration:run
+```
 
 <br />
 
 ## API
-### Login: `api/users/login`
+
+For a fast set up, use this POSTMAN file: [api_sample](https://github.com/app-generator/api-server-nodejs-pro/blob/master/media/api.postman_collection.json)
+
+> **Register** - `api/users/register`
+
 ```
-POST api/users/login
-Host: localhost:3000
+POST api/users/register
 Content-Type: application/json
 
 {
-    "email": "demo@appseed.us",
-    "password": "demo"
-}
-```
-
-### Signup: `/api/users/signup`
-```
-POST api/users/signup
-Host: localhost:3000
-Content-Type: application/json
-
-{
-    "email": "demo@appseed.us",
-    "password": "demo",
-    "name": "George",
-    "surname": "Clooney"
+    "username":"test",
+    "password":"pass", 
+    "email":"test@appseed.us"
 }
 ```
 
 <br />
 
-## Setting up for development
-* clone repo: `git clone https://github.com/app-generator/nodejs-starter.git` 
-* change directory to nodejs-starter: 
-* create a file named .env which should contain the following default setup:
-```
-SALT=35kj7waj3k5kja09jeoi21kn0pg13iuhlkn // used in password hashing
-JWT_SECRET=secret        // used in JWT signing
-SESSION_SECRET=secret    // used for session data
-PORT=3000                // the port on which your server will be available on
-SERVER_ADDRESS=127.0.0.1 // or 0.0.0.0 for all or other interface address you want to listen
-```
-* users are saved in file `config/users.js`
+> **Login** - `api/users/login`
 
-<br />
+```
+POST /api/users/login
+Content-Type: application/json
 
-## Scripts
-**Install Modules**
-```bash
-$ npm i
-$ npm i nodemon -g 
+{
+    "password":"pass", 
+    "email":"test@appseed.us"
+}
 ```
 
 <br />
 
-**Run**
-```bash
-$ npm run start # classic start OR
-$ npm run dev # with nodemon live update  
+> **Logout** - `api/users/logout`
+
 ```
-Runs the application with [nodemon]("https://nodemon.io/"). Server is listening on Port 3000 by default. This can be overwritten by `PORT` constant in `.env` file. 
+POST api/users/logout
+Content-Type: application/json
+authorization: JWT_TOKEN (returned by Login request)
+
+{
+    "token":"JWT_TOKEN"
+}
+```
 
 <br />
 
-## Support
+## Credits
 
-For issues and features request, use **Github** or access the [support page](https://appseed.us/support) provided by **AppSeed** 
+This software is provided by the core AppSeed team with an inspiration from other great NodeJS starters: 
 
-<br />
-
-## License
-MIT @ [AppSeed](https://appseed.us)
+- Initial verison - coded by [Teo Deleanu](https://www.linkedin.com/in/teodeleanu/)
+- [Hackathon Starter](https://github.com/sahat/hackathon-starter) - A truly amazing boilerplate for Node.js apps
+- [Node Server Boilerplate](https://github.com/hagopj13/node-express-boilerplate) - just another cool starter
+- [React NodeJS Argon](https://github.com/creativetimofficial/argon-dashboard-react-nodejs) - released by **Creative-Tim** and [ProjectData](https://projectdata.dev/)
 
 <br />
 
 ---
-[Nodejs Starter](https://appseed.us/boilerplate-code/nodejs-starter) provided by **AppSeed**
+**Node JS API Server** - provided by AppSeed [App Generator](https://appseed.us)
